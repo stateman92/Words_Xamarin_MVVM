@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Words_MVVM.Views.MainPage"
+             xmlns:local="clr-namespace:Words_MVVM.Services">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:ColorConverter x:Key="colorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <NavigationPage.TitleView>
+        <Label Text="Words_MVVM"
+               TextColor="White"
+               VerticalOptions="Center"
+               FontSize="24"
+               FontAttributes="Bold"/>
+    </NavigationPage.TitleView>
+
+    <StackLayout Orientation="Vertical">
+        <StackLayout.Padding>
+            <OnPlatform x:TypeArguments="Thickness">
+                <On Platform="iOS" Value="10, 20, 10, 0"/>
+            </OnPlatform>
+        </StackLayout.Padding>
+
+        <StackLayout HorizontalOptions="FillAndExpand"
+                     VerticalOptions="Start"
+                     Orientation="Horizontal">
+            <Grid HorizontalOptions="FillAndExpand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="30*" />
+                    <ColumnDefinition Width="40*" />
+                    <ColumnDefinition Width="30*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40" />
+                </Grid.RowDefinitions>
+
+                <Picker Grid.Column="0"
+                        VerticalOptions="Center"
+                        HorizontalOptions="FillAndExpand"
+                        ItemsSource="{Binding FromList}"
+                        TextColor="{Binding MainColor, Mode=OneWay, Converter={StaticResource colorConverter}}"
+                        FontAttributes="Bold"
+                        SelectedItem="{Binding FromLanguage, Mode=TwoWay}" />
+                <Label Grid.Column="1"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"
+                       Text="translate to"
+                       TextColor="{Binding MainColor, Mode=OneWay, Converter={StaticResource colorConverter}}"
+                       FontAttributes="Bold"/>
+                <Picker x:Name="picker"
+                        Grid.Column="2"
+                        VerticalOptions="Center"
+                        HorizontalOptions="FillAndExpand"
+                        ItemsSource="{Binding ToList}"
+                        TextColor="{Binding MainColor, Mode=OneWay, Converter={StaticResource colorConverter}}"
+                        FontAttributes="Bold"
+                        SelectedItem="{Binding ToLanguage, Mode=TwoWay}" />
+            </Grid>
+        </StackLayout>
+        <StackLayout HorizontalOptions="FillAndExpand"
+                     VerticalOptions="Start"
+                     Orientation="Horizontal">
+            <Button Text="Switch"
+                    HorizontalOptions="StartAndExpand"
+                    VerticalOptions="Center"
+                    TextColor="{Binding MainColor, Mode=OneWay, Converter={StaticResource colorConverter}}"
+                    FontAttributes="Bold"
+                    FontSize="18"
+                    Command="{Binding SwitchLanguagesCommand}"/>
+            <Button Text="Go"
+                    HorizontalOptions="End"
+                    VerticalOptions="Center"
+                    TextColor="{Binding MainColor, Mode=OneWay, Converter={StaticResource colorConverter}}"
+                    FontAttributes="Bold"
+                    FontSize="22"
+                    Command="{Binding CompletedTextCommand}"/>
+        </StackLayout>
+        <Entry x:Name="entry"
+               HorizontalOptions="FillAndExpand"
+               PlaceholderColor="LightSteelBlue"
+               TextColor="{Binding MainColor, Mode=OneWay, Converter={StaticResource colorConverter}}"
+               Placeholder="Write your word here..."
+               Keyboard="Plain"
+               FontSize="24"
+               Text="{Binding Word, Mode=TwoWay}"/>
+        <ListView x:Name="listView"
+                  ItemsSource="{Binding Translations, Mode=TwoWay}"
+                  HorizontalOptions="FillAndExpand"
+                  SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+                  IsPullToRefreshEnabled="True"
+                  RefreshCommand="{Binding RefreshCommand}"
+                  IsRefreshing="{Binding IsRefreshing, Mode=OneWay}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding Text}"
+                              Detail="{Binding Pos}">
+                        <TextCell.ContextActions>
+                            <MenuItem Text="Synonyms"
+                                      Command="{Binding
+                                        Path=BindingContext.ItemSelectedCommand,
+                                        Source={x:Reference Name=listView}}"
+                                      CommandParameter="{Binding .}"/>
+                            <MenuItem Text="Examples"
+                                      Command="{Binding
+                                        Path=BindingContext.ExamplesSelectedCommand,
+                                        Source={x:Reference Name=listView}}"
+                                      CommandParameter="{Binding .}"/>
+                            <MenuItem Text="Meanings"
+                                      Command="{Binding
+                                        Path=BindingContext.MeaningsSelectedCommand,
+                                        Source={x:Reference Name=listView}}"
+                                      CommandParameter="{Binding .}"/>
+                        </TextCell.ContextActions>
+                    </TextCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+</ContentPage>
