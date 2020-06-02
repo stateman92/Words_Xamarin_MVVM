@@ -12,21 +12,34 @@ namespace Words_MVVM.iOS.Views
         private UIAlertController Alert;
         private NSTimer AlertTimer;
 
-        // Time of the Toast-like message.
+        /// <summary>
+        /// Time of the Toast-like message.
+        /// </summary>
         private const double ShortToastLength = 0.8;
 
-        // Show a long Toast-message.
+        /// <summary>
+        /// Show a long Toast-message.
+        /// </summary>
+        /// <param name="message">The string that will be displayed.</param>
         public void Long(string message)
         {
             Show(message, 2 * ShortToastLength);
         }
 
-        // Show a short Toast-message.
+        /// <summary>
+        /// Show a short Toast-message.
+        /// </summary>
+        /// <param name="message">The string that will be displayed.</param>
         public void Short(string message)
         {
             Show(message, ShortToastLength);
         }
 
+        /// <summary>
+        /// Show a Toast-message.
+        /// </summary>
+        /// <param name="message">The string that will be displayed.</param>
+        /// <param name="toastLength">The timeduration after the Toast will de dismissed.</param>
         private void Show(string message, double toastLength)
         {
             // Dismiss the previous object (if it was presented).
@@ -36,7 +49,9 @@ namespace Words_MVVM.iOS.Views
             UIApplication.SharedApplication.KeyWindow.RootViewController.PresentViewController(Alert, true, null);
         }
 
-        // Dismiss the alert after the specified time.
+        /// <summary>
+        /// Dismiss the alert after the specified time.
+        /// </summary>
         private void Dismiss()
         {
             Alert?.DismissViewController(true, null);

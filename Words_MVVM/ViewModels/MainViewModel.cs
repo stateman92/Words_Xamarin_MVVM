@@ -17,7 +17,9 @@ namespace Words_MVVM.ViewModels
 {
     public partial class MainViewModel : BaseViewModel
     {
-        // Constants in order to make less typo.
+        /// <summary>
+        /// Constants in order to make less typo.
+        /// </summary>
         private const string WordKey = "WordKey";
         private const string FromLanguageKey = "FromLanguageKey";
         private const string ToLanguageKey = "ToLanguageKey";
@@ -40,13 +42,18 @@ namespace Words_MVVM.ViewModels
             Changed(nameof(ToLanguage));
         }
 
-        // A wrapper, that makes a PropertyChanged call more convenient.
+        /// <summary>
+        /// A wrapper, that makes a PropertyChanged call more convenient.
+        /// </summary>
+        /// <param name="propertyName">The name of the property.</param>
         private void Changed(string propertyName)
         {
             OnPropertyChanged(propertyName);
         }
 
-        // The commands.
+        /// <summary>
+        /// The commands.
+        /// </summary>
         public ICommand SwitchLanguagesCommand { get; private set; }
         public ICommand CompletedTextCommand { get; private set; }
         public ICommand ItemSelectedCommand { get; private set; }
@@ -54,8 +61,12 @@ namespace Words_MVVM.ViewModels
         public ICommand ExamplesSelectedCommand { get; private set; }
         public ICommand MeaningsSelectedCommand { get; private set; }
 
-        // Constructor, setup the MainPageService and Commands.
-        // After that download the languages.
+        /// <summary>
+        /// Constructor, setup the MainPageService and Commands.
+        /// After that it downloads the languages.
+        /// </summary>
+        /// <param name="mainPageService">An object that implements the IMainPageService interface.</param>
+        /// <param name="apiCommunicationService">An object that implements the IApiCommunicationService interface.</param>
         public MainViewModel(IMainPageService mainPageService, IApiCommunicationService apiCommunicationService)
         {
             MainPageService = mainPageService;
@@ -71,7 +82,9 @@ namespace Words_MVVM.ViewModels
             GetLanguages();
         }
 
-        // Retrieve the previously saved data (searched word and the two languages).
+        /// <summary>
+        /// Retrieve the previously saved data (searched word and the two languages).
+        /// </summary>
         private async void RestorePreviousData()
         {
             Word = Get(WordKey);
@@ -98,8 +111,13 @@ namespace Words_MVVM.ViewModels
             DoneWithRestore = true;
         }
 
-        // Create a NavigationPage that wraps up the given Page with BindingContext Translation.
-        // The Title of the NavigationPage is optional.
+        /// <summary>
+        /// Create a NavigationPage that wraps up the given Page with BindingContext Translation.
+        /// The Title of the NavigationPage is optional.
+        /// </summary>
+        /// <param name="translation">The Translation that's details will be displayed.</param>
+        /// <param name="page">The Page that will be displayed.</param>
+        /// <param name="title">Optional parameter, it will be the title of the next Page.</param>
         private NavigationPage CreateNavPage(Translation translation, Page page, string title = "")
         {
             page.BindingContext = translation;
@@ -111,14 +129,18 @@ namespace Words_MVVM.ViewModels
             };
         }
 
-        // Outsource the common part of the three Push Commands.
-        private async Task Push(Translation translation, Func<Task<Boolean>> SuccessfullyPushed)
+        /// <summary>
+        /// Outsource the common part of the three Push Commands.
+        /// </summary>
+        /// <param name="translation">The Translation that's details will be displayed.</param>
+        /// <param name="successfullyPushed">A function, that will be called if a push can be make with success.</param>
+        private async Task Push(Translation translation, Func<Task<Boolean>> successfullyPushed)
         {
             if (translation != null)
             {
                 SelectedItem = null;
                 Changed(nameof(SelectedItem));
-                if (await SuccessfullyPushed())
+                if (await successfullyPushed())
                 {
                     MakeAlert(NoElements);
                 }
@@ -127,8 +149,10 @@ namespace Words_MVVM.ViewModels
         }
     }
 
-    // Wrapper part.
-    // It just makes the functions call through the MainPageService more convenient.
+    /// <summary>
+    /// Wrapper part.
+    /// It just makes the functions call through the MainPageService more convenient.
+    /// </summary>
     public partial class MainViewModel
     {
         private void MakeAlert(string message)
@@ -152,13 +176,19 @@ namespace Words_MVVM.ViewModels
         }
     }
 
-    // The HTTP part, where the requests happen.
+    /// <summary>
+    /// The HTTP part, where the requests happen.
+    /// </summary>
     public partial class MainViewModel
     {
-        // It stores that whether the app currently searching for a word.
+        /// <summary>
+        /// It stores that whether the app currently searching for a word.
+        /// </summary>
         private bool IsBusy { get; set; } = false;
 
-        // It downloads (and stores) the available languages from the API.
+        /// <summary>
+        /// It downloads (and stores) the available languages from the API.
+        /// </summary>
         private async void GetLanguages()
         {
             try
@@ -213,7 +243,9 @@ namespace Words_MVVM.ViewModels
             }
         }
 
-        // It downloads (and stores) the definition (meanings, etc.) of the searched word.
+        /// <summary>
+        /// It downloads (and stores) the definition (meanings, etc.) of the searched word.
+        /// </summary>
         private async Task GetDefinition()
         {
             // If it is already working, do not disturb with another request.
@@ -264,10 +296,14 @@ namespace Words_MVVM.ViewModels
         }
     }
 
-    // Persistently stored part (FromLanguage, ToLanguage, Word).
+    /// <summary>
+    /// Persistently stored part (FromLanguage, ToLanguage, Word).
+    /// </summary>
     public partial class MainViewModel
     {
-        // The selected language that the word needs to translate from.
+        /// <summary>
+        /// The selected language that the word needs to translate from.
+        /// </summary>
         private string fromLanguage;
         public string FromLanguage
         {
@@ -318,7 +354,9 @@ namespace Words_MVVM.ViewModels
             }
         }
 
-        // The selected language that the word needs to translate to.
+        /// <summary>
+        /// The selected language that the word needs to translate to.
+        /// </summary>
         private string toLanguage = "";
         public string ToLanguage
         {
@@ -339,7 +377,9 @@ namespace Words_MVVM.ViewModels
             }
         }
 
-        // The searched word.
+        /// <summary>
+        /// The searched word.
+        /// </summary>
         private string word = "";
         public string Word
         {
@@ -356,18 +396,29 @@ namespace Words_MVVM.ViewModels
             }
         }
 
-        // Collection of languages on the side "translate from."
+        /// <summary>
+        /// Collection of languages on the side "translate from."
+        /// </summary>
         public ObservableCollection<string> FromList { get; private set; } = new ObservableCollection<string>();
 
-        // Collection of languages on the side "translate to."
+        /// <summary>
+        /// Collection of languages on the side "translate to."
+        /// </summary>
         public ObservableCollection<string> ToList { get; private set; } = new ObservableCollection<string>();
 
-        // The actual Definition of the searched word.
+        /// <summary>
+        /// The actual Definition of the searched word.
+        /// </summary>
         public RootDefinition RootDefinition { get; set; } = new RootDefinition();
 
-        // Collection of the translation of the searched word.
+        /// <summary>
+        /// Collection of the translation of the searched word.
+        /// </summary>
         public ObservableCollection<Translation> Translations { get; private set; } = new ObservableCollection<Translation>();
 
+        /// <summary>
+        /// The item that the user selected.
+        /// </summary>
         private Translation selectedItem;
         public Translation SelectedItem
         {
@@ -386,10 +437,15 @@ namespace Words_MVVM.ViewModels
         public string MainColor { get; set; } = "#1976D2";
     }
 
-    // The commands part, all commands' functions stored here. 
+    /// <summary>
+    /// The commands part, all commands' functions stored here. 
+    /// </summary>
     public partial class MainViewModel
     {
-        // After clicked Meanings, open a new Page.
+        /// <summary>
+        /// After clicked Meanings, open a new Page.
+        /// </summary>
+        /// <param name="translation">The Translation that's details will be displayed.</param>
         private async Task MeaningsSelected(Translation translation)
         {
             await Push(translation, async () =>
@@ -403,7 +459,10 @@ namespace Words_MVVM.ViewModels
             });
         }
 
-        // After clicked on the item or Synonyms, open a new Page.
+        /// <summary>
+        /// After clicked on the item or Synonyms, open a new Page.
+        /// </summary>
+        /// <param name="translation">The Translation that's details will be displayed.</param>
         private async Task ItemSelected(Translation translation)
         {
             await Push(translation, async () =>
@@ -417,7 +476,10 @@ namespace Words_MVVM.ViewModels
             });
         }
 
-        // After clicked Examples, open a new Page.
+        /// <summary>
+        /// After clicked Examples, open a new Page.
+        /// </summary>
+        /// <param name="translation">The Translation that's details will be displayed.</param>
         private async Task ExamplesSelected(Translation translation)
         {
             await Push(translation, async () =>
@@ -431,14 +493,18 @@ namespace Words_MVVM.ViewModels
             });
         }
 
-        // Pull-to-refresh functionality.
+        /// <summary>
+        /// Pull-to-refresh functionality.
+        /// </summary>
         private async void Refresh()
         {
             await GetDefinition();
         }
 
-        // Change the languages.
-        // After that download the definition too.
+        /// <summary>
+        /// Change the languages.
+        /// After that download the definition too.
+        /// </summary>
         private async void SwitchLanguages()
         {
             var tempLanguage = FromLanguage;
@@ -448,7 +514,9 @@ namespace Words_MVVM.ViewModels
             await GetDefinition();
         }
 
-        // After clicked Go, it download the definition.
+        /// <summary>
+        /// After clicked Go, it download the definition.
+        /// </summary>
         private async void CompletedText()
         {
             if (Word.IsNotNullNorEmpty())

@@ -2,10 +2,16 @@
 {
     public interface IToast
     {
-        // Show a short Toast-message.
+        /// <summary>
+        /// Show a short Toast-message.
+        /// </summary>
+        /// <param name="message">The string that will be displayed.</param>
         void Short(string message);
 
-        // Show a long Toast-message.
+        /// <summary>
+        /// Show a long Toast-message.
+        /// </summary>
+        /// <param name="message">The string that will be displayed.</param>
         void Long(string message);
     }
 }

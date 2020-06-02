@@ -5,7 +5,9 @@ namespace Words_MVVM.Extensions
 {
     public static class ObservableCollectionExtensions
     {
-        // Sort an ObservableCollection in place.
+        /// <summary>
+        /// Sort an ObservableCollection in place.
+        /// </summary>
         public static void Sort(this ObservableCollection<string> collection)
         {
             var tempSortedCollection = new ObservableCollection<string>(collection.OrderBy(text => text));

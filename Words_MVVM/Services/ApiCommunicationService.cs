@@ -10,19 +10,22 @@ namespace Words_MVVM.Services
 {
     public class ApiCommunicationService : IApiCommunicationService
     {
-        // WARNING!
-        // BEFORE USE, PLEASE INSERT AN API KEY HERE!
+#error BEFORE USE, PLEASE INSERT AN API KEY HERE!
         private const string ApiKey = "<insert API key here>";
         private const string BaseApiUrl = "https://dictionary.yandex.net/api/v1/dicservice.json/";
 
-        // The URL of the languages.
+        /// <summary>
+        /// The URL of the languages.
+        /// </summary>
         private string LanguageApiUrl
         {
             get => BaseApiUrl +
                    "getLangs?key=" + ApiKey;
         }
 
-        // The URL of the words.
+        /// <summary>
+        /// The URL of the words.
+        /// </summary>
         private string WordApiUrl
         {
             get => BaseApiUrl +
@@ -36,7 +39,9 @@ namespace Words_MVVM.Services
         private string ToLanguage { get; set; }
         private string Word { get; set; }
 
-        // Download the available languages.
+        /// <summary>
+        /// Download the available languages.
+        /// </summary>
         public async Task<List<string>> GetLanguages()
         {
             var content = await new HttpClient().GetStringAsync(LanguageApiUrl);
@@ -45,7 +50,12 @@ namespace Words_MVVM.Services
             return JsonConvert.DeserializeObject<List<string>>(content);
         }
 
-        // Download the data of a given string Word in the given languages.
+        /// <summary>
+        /// Download the data of a given string Word in the given languages.
+        /// </summary>
+        /// <param name="Word">The word that wanted to be translated.</param>
+        /// <param name="FromLanguage">The language from the user wants to translate the word.</param>
+        /// <param name="ToLanguage">The language to the user wants to translate the word.</param>
         public async Task<RootDefinition> GetDefinition(string Word, string FromLanguage, string ToLanguage)
         {
             this.Word = Word;

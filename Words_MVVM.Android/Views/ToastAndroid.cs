@@ -9,18 +9,29 @@ namespace Words_MVVM.Droid.Views
 {
     public class ToastAndroid : IToast
     {
-        // Show a long Toast-message.
+        /// <summary>
+        /// Show a long Toast-message.
+        /// </summary>
+        /// <param name="message">The string that will be displayed.</param>
         public void Long(string message)
         {
             Show(message, ToastLength.Long);
         }
 
-        // Show a short Toast-message.
+        /// <summary>
+        /// Show a short Toast-message.
+        /// </summary>
+        /// <param name="message">The string that will be displayed.</param>
         public void Short(string message)
         {
             Show(message, ToastLength.Short);
         }
 
+        /// <summary>
+        /// Show a Toast-message.
+        /// </summary>
+        /// <param name="message">The string that will be displayed.</param>
+        /// <param name="toastLength">The ToastLength enum, that holds the Toast showing time.</param>
         private void Show(string message, ToastLength toastLength)
         {
             Toast.MakeText(Application.Context, message, toastLength).Show();
