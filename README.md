@@ -1,5 +1,5 @@
-# Words_Xamarin_MVVM
-A small app to demonstrate the MVVM architecture in the Xamarin crossplatform (iOS, Android) development.
+# Words_Xamarin_MVVM_C#
+A small app (written in C#) to demonstrate the MVVM architecture in the Xamarin crossplatform (iOS, Android) development.
 
 # Warning
 Before use, please insert a valid API key to the [ApiCommunicationService file](Words_MVVM/Services/ApiCommunicationService.cs).
